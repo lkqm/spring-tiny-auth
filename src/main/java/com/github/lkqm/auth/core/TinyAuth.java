@@ -1,11 +1,11 @@
 package com.github.lkqm.auth.core;
 
+import com.github.lkqm.auth.AuthProperties;
 import com.github.lkqm.auth.annotation.Auth;
 import com.github.lkqm.auth.exception.AuthException;
 import com.github.lkqm.auth.exception.AuthExpiredException;
 import com.github.lkqm.auth.exception.AuthNotLoggedException;
 import com.github.lkqm.auth.exception.AuthPermissionException;
-import com.github.lkqm.auth.AuthProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -124,13 +125,22 @@ public class TinyAuth {
     }
 
     private String getHandlerMethodPattern(HandlerMethod handler, String path) {
+        RequestMappingInfo requestMappingInfo = null;
         RequestMappingHandlerMapping handlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
-        RequestMappingInfo requestMappingInfo = handlerMapping.getHandlerMethods().entrySet()
-                .stream().filter(entry -> entry.getValue().getMethod().equals(handler.getMethod()))
-                .map(Map.Entry::getKey).findFirst().orElse(null);
+        Set<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = handlerMapping.getHandlerMethods().entrySet();
+        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
+            RequestMappingInfo oneMappingInfo = entry.getKey();
+            HandlerMethod oneHandlerMethod = entry.getValue();
+            if (oneHandlerMethod.getMethod().equals(handler.getMethod())) {
+                requestMappingInfo = oneMappingInfo;
+                break;
+            }
+        }
         if (requestMappingInfo == null) {
             throw new IllegalStateException("Assert requestMappingInfo != null for handler: " + handler);
         }
+
+        // 匹配的路径
         Set<String> patterns = requestMappingInfo.getPatternsCondition().getPatterns();
         if (CollectionUtils.isEmpty(patterns)) {
             throw new IllegalStateException("Assert (patterns != null && patterns.size() != 0) for handler: " + handler);
@@ -138,7 +148,16 @@ public class TinyAuth {
         if (patterns.size() == 1) {
             return patterns.iterator().next();
         }
-        String pattern = patterns.stream().filter(p -> pathMatcher.match(p, path)).findFirst().orElse(null);
+
+        String pattern = null;
+        Iterator<String> iterator = patterns.iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            if (pathMatcher.match(next, path)) {
+                pattern = next;
+                break;
+            }
+        }
         if (pattern == null) {
             throw new IllegalStateException("Assert (pattern != null) for handler: " + handler);
         }

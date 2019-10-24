@@ -1,9 +1,9 @@
 package com.github.lkqm.auth;
 
-import com.github.lkqm.auth.core.AuthInterceptor;
-import com.github.lkqm.auth.core.TinyAuth;
 import com.github.lkqm.auth.core.AuthExpressionRoot;
 import com.github.lkqm.auth.core.AuthInfoProvider;
+import com.github.lkqm.auth.core.AuthInterceptor;
+import com.github.lkqm.auth.core.TinyAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,14 +11,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * 权限认证配置类
  */
 @Configuration
 @EnableConfigurationProperties(AuthProperties.class)
-public class AuthConfiguration implements WebMvcConfigurer {
+public class AuthConfiguration extends WebMvcConfigurerAdapter {
 
     @Autowired
     private AuthProperties authProperties;
