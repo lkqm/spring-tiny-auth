@@ -36,7 +36,7 @@
 
 4. 配置
     ```properties
-       tiny-auth.anon-patterns=/login                                 # 允许匿名访问的地址
+       tiny-auth.anno-patterns=/login                                 # 允许匿名访问的地址
        tiny-auth.authen-patterns=/logout, /admin/menu, /admin/info    # 只需要认证(登录)就能访问的地址
        tiny-auth.author-patterns=/**                                  # 需要认证授权的地址
     ```
@@ -54,7 +54,7 @@
 ## @Auth注解
 @Auth注解value值指定了spring el表达式, 例如: `@Auth("authen()")`, 内部预定义表达式如下:
 
-- annon(): 匿名访问
+- anno(): 匿名访问
 - authen(): 只需要认证(登录)
 - hasRole('admin', 'operator'): 拥有任意一个角色
 - hasAllRole('admin', 'operator'): 必须拥有所有角色
