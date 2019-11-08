@@ -89,7 +89,7 @@ public class TinyAuth {
             return;
         }
 
-        if (authInfo.isSuperAdmin()) {
+        if (authInfo !=null && authInfo.isSuperAdmin()) {
             return;
         }
 
