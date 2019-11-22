@@ -3,13 +3,13 @@
 
 说明: 内部基于spring webmvc框架HandlerInterceptor拦截器实现
 
-## 特性
+## Future
 - 十分钟上手, 代码不到400行
 - 支持基于路径的权限控制(rest风格)
 - 注解@Auth控制访问权限
 - 支持JDK1.7+, Spring Boot1.5.x, Spring Boot2.x
 
-## 快速开始
+## Quick: spring-boot
 1. 添加依赖
     ```xml
     <dependency>
@@ -51,6 +51,9 @@
     |---- AuthPermissionException    # 无访问权限
     ```
 
+## 路径权限
+注意路径权限是取匹配Controller处理方法进行绝对相等比较, 当:`/user/{id}`, 不匹配例子: `/user/{idx}`
+
 ## @Auth注解
 @Auth注解value值指定了spring el表达式, 例如: `@Auth("authen()")`, 内部预定义表达式如下:
 
@@ -60,3 +63,8 @@
 - hasAllRole('admin', 'operator'): 必须拥有所有角色
 - hasPermission('admin', 'operator'): 拥有任意一个权限
 - hasAllPermission('complaint:add', 'complaint:delete'): 必须拥有所有权限
+
+提示: 常量类`AuthConstants`定义了`anno(), authen()`表达式
+
+## 类似项目
+- [light-security](https://github.com/eacdy/light-security): Light Security是一个基于jwt的权限控制框架，支持与Spring Boot配合使用，支持Spring MVC与WebFlux 
