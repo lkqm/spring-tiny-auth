@@ -66,5 +66,10 @@
 
 提示: 常量类`AuthConstants`定义了`anno(), authen()`表达式
 
+## Token支持
+提供了常见定义token的接口:
+- `TokenManager`: 进行token管理
+- `UserInfo`: 预定义token对应用户数据模型
+
 ## 类似项目
 - [light-security](https://github.com/eacdy/light-security): Light Security是一个基于jwt的权限控制框架，支持与Spring Boot配合使用，支持Spring MVC与WebFlux 
