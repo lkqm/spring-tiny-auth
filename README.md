@@ -1,4 +1,7 @@
 # spring-tiny-auth
+![Maven Central](https://img.shields.io/maven-central/v/com.github.lkqm/1.0.0?style=flat)
+![Travis (.org) branch](https://img.shields.io/travis/lkqm/spring-tiny-auth/master)
+
 一个简单权限管理框架(代码不到400行), 支持基于路径拦截、支持rest风格路径权限、注解@Auth支持多种权限认证(基于角色的权限), 不支持登录、登出、缓存等功能（与权限认证无关, 业务中可自定灵活实现）.
 
 说明: 内部基于spring webmvc框架HandlerInterceptor拦截器实现
@@ -15,7 +18,7 @@
     <dependency>
         <groupId>com.github.lkqm</groupId>
         <artifactId>spring-tiny-auth</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </dependency>
     ```
 2. 提供自定义`AuthInfoProvider`
