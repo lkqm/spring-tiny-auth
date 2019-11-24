@@ -1,5 +1,5 @@
 # spring-tiny-auth
-![Maven Central](https://img.shields.io/maven-central/v/com.github.lkqm/1.0.0?style=flat)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.lkqm/spring-tiny-auth)
 ![Travis (.org) branch](https://img.shields.io/travis/lkqm/spring-tiny-auth/master)
 
 一个简单权限管理框架(代码不到400行), 支持基于路径拦截、支持rest风格路径权限、注解@Auth支持多种权限认证(基于角色的权限), 不支持登录、登出、缓存等功能（与权限认证无关, 业务中可自定灵活实现）.
