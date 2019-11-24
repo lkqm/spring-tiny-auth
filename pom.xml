@@ -7,7 +7,7 @@
     <artifactId>spring-tiny-auth</artifactId>
     <version>1.0.0</version>
 
-    <name>Spring Tiny Auth</name>
+    <name>${project.artifactId}</name>
     <description>一个简单权限管理框架, 支持rest风格路径、@Auth注解进行权限控制</description>
     <url>https://github.com/lkqm/spring-tiny-auth</url>
     <licenses>
@@ -125,21 +125,26 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <plugin>
-                      <groupId>org.sonatype.plugins</groupId>
-                      <artifactId>nexus-staging-maven-plugin</artifactId>
-                      <version>1.6.7</version>
-                      <extensions>true</extensions>
-                      <configuration>
-                         <serverId>ossrh</serverId>
-                         <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                         <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                      </configuration>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <distributionManagement>
         <repository>
