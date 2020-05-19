@@ -26,6 +26,7 @@ public class AuthExpressionRoot {
      * 允许匿名访问
      */
     public final boolean anno() {
+        AuthInfo authInfo = getAuthInfo();
         return true;
     }
 
