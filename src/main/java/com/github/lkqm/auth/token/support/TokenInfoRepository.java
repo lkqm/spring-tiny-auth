@@ -1,20 +1,30 @@
 package com.github.lkqm.auth.token.support;
 
-import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * 基于jdbc的token存储
  */
-@AllArgsConstructor
 public class TokenInfoRepository {
 
     private final String table;
     private final JdbcTemplate jdbcTemplate;
+
+    public static final String DEFAULT_TABLE_NAME = "tiny_auth_token";
+
+    public TokenInfoRepository(JdbcTemplate jdbcTemplate) {
+        this(DEFAULT_TABLE_NAME, jdbcTemplate);
+    }
+
+    public TokenInfoRepository(String table, JdbcTemplate jdbcTemplate) {
+        this.table = table;
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public void save(TokenInfo tokenInfo) {
         TokenInfo originalTokenInfo = findById(tokenInfo.getToken());
@@ -46,7 +56,8 @@ public class TokenInfoRepository {
     public TokenInfo findById(String token) {
         String sql = "select token, data, issue_timestamp, expire_timestamp from %s where token = ?";
         sql = formatSqlWithTable(sql);
-        return jdbcTemplate.queryForObject(sql, TokenInfoRowMapper.INSTANCE, token);
+        List<TokenInfo> data = jdbcTemplate.query(sql, TokenInfoRowMapper.INSTANCE, token);
+        return data.size() > 0 ? data.get(0) : null;
     }
 
     private String formatSqlWithTable(String tplSql) {

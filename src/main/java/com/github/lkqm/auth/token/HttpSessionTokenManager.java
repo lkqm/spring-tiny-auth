@@ -17,8 +17,10 @@ public class HttpSessionTokenManager implements TokenManager {
 
     private final String attributeName;
 
+    public static final String DEFAULT_ATTRIBUTE_NAME = "__TOKEN__";
+
     public HttpSessionTokenManager() {
-        this("__TOKEN__");
+        this(DEFAULT_ATTRIBUTE_NAME);
     }
 
     public HttpSessionTokenManager(@NonNull String attributeName) {

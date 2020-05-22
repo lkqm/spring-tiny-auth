@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(AuthConfiguration.class)
+@Import({AuthConfiguration.class, TokenManagerConfiguration.class})
 public @interface EnableTinyAuth {
 }

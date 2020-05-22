@@ -60,4 +60,5 @@ public class AuthConfiguration extends WebMvcConfigurerAdapter {
         AuthExpressionRoot expressionRoot = new AuthExpressionRoot(authInfoProvider);
         return expressionRoot;
     }
+
 }

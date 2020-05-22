@@ -10,6 +10,7 @@
 - 十分钟上手, 代码不到400行
 - 支持基于路径的权限控制(rest风格)
 - 注解@Auth控制访问权限
+- 内置支持多种token管理方案
 - 支持JDK1.7+, Spring Boot1.5.x, Spring Boot2.x
 
 ## Quick: spring-boot
@@ -18,7 +19,7 @@
     <dependency>
         <groupId>com.github.lkqm</groupId>
         <artifactId>spring-tiny-auth</artifactId>
-        <version>1.0.0</version>
+        <version>${version}</version>
     </dependency>
     ```
 2. 提供自定义`AuthInfoProvider`
@@ -68,6 +69,13 @@
 - hasAllPermission('complaint:add', 'complaint:delete'): 必须拥有所有权限
 
 提示: 常量类`AuthConstants`定义了`anno(), authen()`表达式
+
+## Token管理
+TokenManager内置提供的token管理, 支持如下几种类型, 可通过配置`tiny-auth.token.type`:
+- HttpSessionTokenManager(httpsession): 基于HttpSession存储
+- JdbcTokenManager(jdbc): 基于关系型数据库, 使用需要手动创建表
+- JedisTokenManager(jedis): 基于redis存储, 使用jedis客户端连接
+- RedisTemplateTokenManager(redistemplate): 基于redis存储, 使用RedisTemplate连接
 
 ## 类似项目
 - [light-security](https://github.com/eacdy/light-security): Light Security是一个基于jwt的权限控制框架，支持与Spring Boot配合使用，支持Spring MVC与WebFlux 
