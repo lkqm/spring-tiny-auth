@@ -4,8 +4,10 @@ import com.github.lkqm.auth.token.support.JsonUtils;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Save token data in HttpSession object.
@@ -16,7 +18,7 @@ public class HttpSessionTokenManager implements TokenManager {
     private final String attributeName;
 
     public HttpSessionTokenManager() {
-        this.attributeName = "__TOKEN__";
+        this("__TOKEN__");
     }
 
     public HttpSessionTokenManager(@NonNull String attributeName) {
@@ -25,21 +27,18 @@ public class HttpSessionTokenManager implements TokenManager {
 
     @Override
     public String generateToken(Object data) {
-        HttpServletRequest request = (HttpServletRequest) RequestContextHolder.getRequestAttributes();
-        request.getSession().setAttribute(attributeName, JsonUtils.toJson(data));
+        doGetHttpSession().setAttribute(attributeName, JsonUtils.toJson(data));
         return null;
     }
 
     @Override
     public void removeToken(String token) {
-        HttpServletRequest request = (HttpServletRequest) RequestContextHolder.getRequestAttributes();
-        request.getSession().removeAttribute(attributeName);
+        doGetHttpSession().removeAttribute(attributeName);
     }
 
     @Override
     public <T> T getTokenData(String token, Class<T> type) {
-        HttpServletRequest request = (HttpServletRequest) RequestContextHolder.getRequestAttributes();
-        Object data = request.getSession().getAttribute(attributeName);
+        Object data = doGetHttpSession().getAttribute(attributeName);
         if (data == null) return null;
         return JsonUtils.fromJson(data.toString(), type);
     }
@@ -47,5 +46,10 @@ public class HttpSessionTokenManager implements TokenManager {
     @Override
     public <T> T getTokenDataAndDelay(String token, Class<T> type) {
         return getTokenData(token, type);
+    }
+
+    HttpSession doGetHttpSession() {
+        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return req.getSession();
     }
 }

@@ -1,6 +1,7 @@
 package com.github.lkqm.auth.token;
 
 import com.github.lkqm.auth.token.support.JsonUtils;
+import lombok.Getter;
 import lombok.NonNull;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Store token data in redis by Jedis client.
  */
+@Getter
 public class JedisTokenManager implements TokenManager {
 
     private final int tokenLiveMinutes;

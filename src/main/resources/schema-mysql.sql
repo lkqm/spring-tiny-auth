@@ -1,4 +1,4 @@
-create table token (
+create table tiny_auth_token (
     token varchar(128) not null,
 	data text not null,
 	issue_timestamp bigint not null,
