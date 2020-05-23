@@ -37,7 +37,7 @@ public class TokenInfoRepository {
                     tokenInfo.getIssueTimestamp(),
                     tokenInfo.getExpireTimestamp());
         } else {
-            String sql = "update %s set data=?, issue_timestamp=?, expire_timestamp=?) where token=?";
+            String sql = "update %s set data=?, issue_timestamp=?, expire_timestamp=? where token=?";
             sql = formatSqlWithTable(sql);
             jdbcTemplate.update(sql,
                     tokenInfo.getData(),
@@ -47,10 +47,10 @@ public class TokenInfoRepository {
         }
     }
 
-    public void deleteById(String token) {
+    public int deleteById(String token) {
         String deleteSql = "delete from %s where token = ?";
         deleteSql = formatSqlWithTable(deleteSql);
-        jdbcTemplate.update(deleteSql, token);
+        return jdbcTemplate.update(deleteSql, token);
     }
 
     public TokenInfo findById(String token) {
