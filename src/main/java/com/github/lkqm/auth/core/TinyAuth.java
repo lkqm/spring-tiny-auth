@@ -8,21 +8,14 @@ import com.github.lkqm.auth.exception.AuthNotLoggedException;
 import com.github.lkqm.auth.exception.AuthPermissionException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 认证授权核心校验
@@ -44,22 +37,12 @@ public class TinyAuth {
      * @throws AuthException
      */
     public void auth(HttpServletRequest request, HandlerMethod handlerMethod) throws AuthException {
-        Auth auth = getAuthAnnotation(handlerMethod);
+        Auth auth = Utils.getAuthAnnotation(handlerMethod);
         if (auth == null) {
             checkPatterns(request, handlerMethod);
         } else {
             checkAnnotation(auth);
         }
-    }
-
-    private Auth getAuthAnnotation(HandlerMethod handlerMethod) {
-        Method method = handlerMethod.getMethod();
-        Auth auth = AnnotationUtils.getAnnotation(method, Auth.class);
-        if (auth == null) {
-            Class<?> clazz = handlerMethod.getBeanType();
-            auth = AnnotationUtils.getAnnotation(clazz, Auth.class);
-        }
-        return auth;
     }
 
     private void checkAnnotation(Auth auth) {
@@ -97,7 +80,7 @@ public class TinyAuth {
             if (authInfo == null) throw new AuthNotLoggedException("未登录");
             if (authInfo.isAuthExpired()) throw new AuthExpiredException("登录过期");
 
-            String pattern = getHandlerMethodPattern(handlerMethod, path);
+            String pattern = Utils.getHandlerMethodPattern(applicationContext, pathMatcher, handlerMethod, path);
             boolean result = authInfo.hasPatternPermission(pattern, method);
             if (!result) throw new AuthPermissionException("无权限");
         }
@@ -122,46 +105,6 @@ public class TinyAuth {
             }
         }
         return false;
-    }
-
-    private String getHandlerMethodPattern(HandlerMethod handler, String path) {
-        RequestMappingInfo requestMappingInfo = null;
-        RequestMappingHandlerMapping handlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
-        Set<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = handlerMapping.getHandlerMethods().entrySet();
-        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
-            RequestMappingInfo oneMappingInfo = entry.getKey();
-            HandlerMethod oneHandlerMethod = entry.getValue();
-            if (oneHandlerMethod.getMethod().equals(handler.getMethod())) {
-                requestMappingInfo = oneMappingInfo;
-                break;
-            }
-        }
-        if (requestMappingInfo == null) {
-            throw new IllegalStateException("Assert requestMappingInfo != null for handler: " + handler);
-        }
-
-        // 匹配的路径
-        Set<String> patterns = requestMappingInfo.getPatternsCondition().getPatterns();
-        if (CollectionUtils.isEmpty(patterns)) {
-            throw new IllegalStateException("Assert (patterns != null && patterns.size() != 0) for handler: " + handler);
-        }
-        if (patterns.size() == 1) {
-            return patterns.iterator().next();
-        }
-
-        String pattern = null;
-        Iterator<String> iterator = patterns.iterator();
-        while (iterator.hasNext()) {
-            String next = iterator.next();
-            if (pathMatcher.match(next, path)) {
-                pattern = next;
-                break;
-            }
-        }
-        if (pattern == null) {
-            throw new IllegalStateException("Assert (pattern != null) for handler: " + handler);
-        }
-        return pattern;
     }
 
 }
