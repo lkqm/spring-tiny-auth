@@ -44,6 +44,7 @@
         <mockito.version>2.28.2</mockito.version>
         <powermock.version>2.0.2</powermock.version>
         <h2.version>1.4.200</h2.version>
+        <acai.version>1.1</acai.version>
     </properties>
 
     <dependencies>
@@ -135,7 +136,7 @@
         <dependency>
             <groupId>com.google.acai</groupId>
             <artifactId>acai</artifactId>
-            <version>1.1</version>
+            <version>${acai.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
