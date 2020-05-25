@@ -44,6 +44,7 @@
         <mockito.version>2.28.2</mockito.version>
         <powermock.version>2.0.2</powermock.version>
         <h2.version>1.4.200</h2.version>
+        <dbunit.version>2.6.0</dbunit.version>
         <acai.version>1.1</acai.version>
     </properties>
 
@@ -131,6 +132,12 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>${dbunit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <tiny_auth_token token="1" data="123" issue_timestamp="1590330998266" expire_timestamp="1590332798266"/>
+    <tiny_auth_token token="2" data="123" issue_timestamp="1590330998266" expire_timestamp="1590332798266"/>
+    <tiny_auth_token token="3" data="123" issue_timestamp="1590330998266" expire_timestamp="1590332798266"/>
+</dataset>
