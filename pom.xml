@@ -40,7 +40,7 @@
         <jedis.version>3.1.0</jedis.version>
         <gson.version>2.8.6</gson.version>
         <!-- test -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <mockito.version>2.28.2</mockito.version>
         <powermock.version>2.0.2</powermock.version>
         <h2.version>1.4.200</h2.version>
